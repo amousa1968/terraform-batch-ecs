@@ -32,7 +32,8 @@ Refer to the `outputs.tf` file for all output values.
 - IAM roles are created with least privilege and condition statements to restrict access.
 
 ## License
-
+Public repository
+This repository is public and visible to anyone
 ## Terraform Commands
 
 To initialize the Terraform working directory:
@@ -64,5 +65,6 @@ To destroy the created resources:
 ```bash
 terraform destroy
 ```
+
 
 
