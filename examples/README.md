@@ -1,4 +1,4 @@
-# AWS Batch ECS Fargate Terraform Module - Examples Using Terraform IaC
+# AWS Batch ECS Fargate Terraform Module - Examples
 
 This directory contains example usage of the `batch-ecs` Terraform module.
 
@@ -61,8 +61,6 @@ The example passes the following variables to the module:
 - TLS encryption is enabled for all data transmission in Batch job definitions.
 - CloudWatch monitoring and alarms are configured for Batch job metrics.
 - EventBridge rule and Amazon Inspector integration are optional and controlled via variables.
-
-## License
 
 
 

@@ -168,7 +168,7 @@ variable "batch_job_memory" {
 
 variable "batch_job_environment" {
   description = "Environment variables for the AWS Batch job"
-  type        = list(object({
+  type = list(object({
     name  = string
     value = string
   }))
@@ -177,7 +177,7 @@ variable "batch_job_environment" {
 
 variable "batch_job_secrets" {
   description = "Secrets for the AWS Batch job"
-  type        = list(object({
+  type = list(object({
     name      = string
     valueFrom = string
   }))
