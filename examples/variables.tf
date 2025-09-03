@@ -115,3 +115,118 @@ variable "ecr_repository_arn" {
   type        = string
   default     = ""
 }
+
+variable "batch_compute_environment_name" {
+  description = "Name of the AWS Batch compute environment"
+  type        = string
+}
+
+variable "batch_compute_environment_state" {
+  description = "State of the AWS Batch compute environment (ENABLED or DISABLED)"
+  type        = string
+}
+
+variable "batch_max_vcpus" {
+  description = "Maximum vCPUs for the AWS Batch compute environment"
+  type        = number
+}
+
+variable "batch_job_queue_name" {
+  description = "Name of the AWS Batch job queue"
+  type        = string
+}
+
+variable "batch_job_queue_state" {
+  description = "State of the AWS Batch job queue (ENABLED or DISABLED)"
+  type        = string
+}
+
+variable "batch_job_queue_priority" {
+  description = "Priority of the AWS Batch job queue"
+  type        = number
+}
+
+variable "batch_job_definition_name" {
+  description = "Name of the AWS Batch job definition"
+  type        = string
+}
+
+variable "batch_container_image" {
+  description = "Container image for the AWS Batch job"
+  type        = string
+}
+
+variable "batch_job_vcpu" {
+  description = "vCPU units for the AWS Batch job"
+  type        = string
+}
+
+variable "batch_job_memory" {
+  description = "Memory for the AWS Batch job in MiB"
+  type        = string
+}
+
+variable "batch_job_environment" {
+  description = "Environment variables for the AWS Batch job"
+  type        = list(object({
+    name  = string
+    value = string
+  }))
+  default = []
+}
+
+variable "batch_job_secrets" {
+  description = "Secrets for the AWS Batch job"
+  type        = list(object({
+    name      = string
+    valueFrom = string
+  }))
+  default = []
+}
+
+variable "batch_job_log_prefix" {
+  description = "Log stream prefix for AWS Batch job"
+  type        = string
+}
+
+variable "batch_assign_public_ip" {
+  description = "Whether to assign public IP to AWS Batch job"
+  type        = string
+}
+
+variable "batch_fargate_platform_version" {
+  description = "Fargate platform version for AWS Batch job"
+  type        = string
+}
+
+variable "batch_job_timeout_seconds" {
+  description = "Timeout in seconds for AWS Batch job"
+  type        = number
+}
+
+variable "batch_job_retry_attempts" {
+  description = "Number of retry attempts for AWS Batch job"
+  type        = number
+}
+
+variable "batch_job_tags" {
+  description = "Tags for AWS Batch job definition"
+  type        = map(string)
+  default     = {}
+}
+
+variable "batch_service_role_name" {
+  description = "Name of the IAM role for AWS Batch service"
+  type        = string
+}
+
+variable "security_group_ids" {
+  description = "List of security group IDs for AWS Batch"
+  type        = list(string)
+}
+
+variable "create_ecs_task_definition" {
+  description = "Whether to create ECS task definition"
+  type        = bool
+  default     = false
+}

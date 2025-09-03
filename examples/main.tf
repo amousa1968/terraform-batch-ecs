@@ -1,5 +1,9 @@
 provider "aws" {
-  region = "us-east-1"
+  region                        = "us-east-1"
+  access_key                    = "mock_access_key"
+  secret_key                    = "mock_secret_key"
+  skip_credentials_validation   = true
+  skip_requesting_account_id    = true
 }
 
 module "batch_ecs" {
@@ -18,10 +22,10 @@ module "batch_ecs" {
   region                      = "us-east-1"
   service_name                = "fargate-service"
   desired_count               = 1
-  private_subnet_ids          = []
-  kms_key_arn                 = ""
-  kms_encrypted_secret_arn    = ""
-  s3_bucket_name              = ""
+  private_subnet_ids          = ["subnet-0123456789abcdef0", "subnet-0fedcba9876543210"]
+  kms_key_arn                 = "abcd1234-5678-90ab-cdef-EXAMPLEKEY"
+  kms_encrypted_secret_arn    = "arn:aws:secretsmanager:us-east-1:123456789012:secret:example-secret"
+  s3_bucket_name              = "example-bucket"
 
   enable_eventbridge_rule     = false
   eventbridge_rule_name       = "batch-events-rule"
@@ -29,4 +33,31 @@ module "batch_ecs" {
 
   enable_inspector            = false
   ecr_repository_arn          = ""
+
+  # Required AWS Batch variables
+  batch_compute_environment_name  = "example-batch-compute-env"
+  batch_compute_environment_state = "ENABLED"
+  batch_max_vcpus                 = 16
+
+  batch_job_queue_name           = "example-batch-job-queue"
+  batch_job_queue_state          = "ENABLED"
+  batch_job_queue_priority       = 1
+
+  batch_job_definition_name      = "example-batch-job-def"
+  batch_container_image          = "amazonlinux"
+  batch_job_vcpu                 = "1"
+  batch_job_memory               = "2048"
+  batch_job_environment          = []
+  batch_job_secrets              = []
+  batch_job_log_prefix           = "batch-job"
+  batch_assign_public_ip         = "ENABLED"
+  batch_fargate_platform_version = "LATEST"
+  batch_job_timeout_seconds      = 3600
+  batch_job_retry_attempts       = 3
+  batch_job_tags                 = {}
+
+  batch_service_role_name        = "example-batch-service-role"
+  security_group_ids             = ["sg-0123456789abcdef0"]
+
+  create_ecs_task_definition     = true
 }
