@@ -1,0 +1,72 @@
+name: 'Terraform Mock Testing'
+
+on:
+  push:
+    branches: [ main, master, develop ]
+    paths:
+      - '**.tf'
+      - '.github/workflows/terraform-mock.yml'
+  pull_request:
+    branches: [ main, master, develop ]
+    paths:
+      - '**.tf'
+      - '.github/workflows/terraform-mock.yml'
+
+env:
+  TF_VERSION: '1.0.0'
+  TF_WORKING_DIR: '.'
+
+jobs:
+  terraform-mock-test:
+    name: 'Terraform Mock Test'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.TF_WORKING_DIR }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TF_VERSION }}
+
+    - name: Configure AWS Credentials (Mock)
+      run: |
+        mkdir -p ~/.aws
+        cat > ~/.aws/credentials << EOF
+        [default]
+        aws_access_key_id = test
+        aws_secret_access_key = test
+        region = us-east-1
+        EOF
+
+    - name: Terraform Format Check
+      run: terraform fmt -check -diff
+
+    - name: Terraform Init (Mock)
+      run: |
+        terraform init -no-color -backend=false
+
+    - name: Terraform Validate (Mock)
+      run: terraform validate -no-color
+
+    - name: Terraform Plan (Mock)
+      run: |
+        terraform plan -no-color -input=false -var-file="examples/terraform.tfvars"
+      env:
+        AWS_ACCESS_KEY_ID: test
+        AWS_SECRET_ACCESS_KEY: test
+        AWS_DEFAULT_REGION: us-east-1
+
+    - name: Run Tests
+      run: |
+        echo "✅ Terraform Mock Testing Completed Successfully"
+        echo "📋 Test Results:"
+        echo "  - Format Check: PASSED"
+        echo "  - Init: PASSED"
+        echo "  - Validate: PASSED"
+        echo "  - Plan: PASSED"
