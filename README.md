@@ -32,8 +32,37 @@ Refer to the `outputs.tf` file for all output values.
 - IAM roles are created with least privilege and condition statements to restrict access.
 
 ## License
-Public repository
-This repository is public and visible to anyone
+
+## CI/CD
+
+This module includes GitHub Actions workflows for automated testing and validation:
+
+### Workflows
+
+1. **terraform.yml**: Main workflow that runs on pushes and PRs to main/master branches
+   - Terraform format check
+   - Terraform validation
+   - Terraform init and plan
+   - Updates PR with results
+
+2. **terraform-mock.yml**: Mock testing workflow using test AWS credentials
+   - Runs format, validate, init, and plan with mock credentials
+   - Safe for testing without real AWS resources
+
+3. **terraform-examples.yml**: Tests the example configurations
+   - Runs in the `examples/` directory
+   - Validates the example usage works correctly
+
+### Mock Testing
+
+The mock testing workflows use test AWS credentials to validate the Terraform configuration without requiring real AWS resources. This is useful for:
+
+- Pull request validation
+- Development testing
+- CI/CD pipelines
+- Code quality checks
+
+
 ## Terraform Commands
 
 To initialize the Terraform working directory:
@@ -65,6 +94,3 @@ To destroy the created resources:
 ```bash
 terraform destroy
 ```
-
-
-
