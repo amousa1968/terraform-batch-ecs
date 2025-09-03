@@ -32,9 +32,9 @@ resource "aws_ecs_service" "ecs-batch" {
   launch_type     = "FARGATE"
 
   network_configuration {
-    subnets         = var.private_subnet_ids
+    subnets          = var.private_subnet_ids
     assign_public_ip = false
-    security_groups = var.security_group_ids
+    security_groups  = var.security_group_ids
   }
 
   depends_on = [aws_iam_role_policy_attachment.ecs_task_execution_role_policy]
@@ -132,10 +132,10 @@ resource "aws_batch_compute_environment" "batch_compute_env" {
 
   compute_resources {
     type = "FARGATE"
-    
-    subnets = var.private_subnet_ids
+
+    subnets            = var.private_subnet_ids
     security_group_ids = var.security_group_ids
-    
+
     max_vcpus = var.batch_max_vcpus
   }
 
@@ -165,14 +165,14 @@ resource "aws_batch_job_queue" "batch_job_queue" {
 resource "aws_batch_job_definition" "batch_job_definition" {
   name = var.batch_job_definition_name
   type = "container"
-  
+
   platform_capabilities = ["FARGATE"]
-  
+
   container_properties = jsonencode({
-    image       = var.batch_container_image
-    jobRoleArn  = aws_iam_role.ecs_task_role.arn
+    image            = var.batch_container_image
+    jobRoleArn       = aws_iam_role.ecs_task_role.arn
     executionRoleArn = aws_iam_role.ecs_task_execution_role.arn
-    
+
     resourceRequirements = [
       {
         type  = "VCPU"
@@ -183,9 +183,9 @@ resource "aws_batch_job_definition" "batch_job_definition" {
         value = var.batch_job_memory
       }
     ]
-    
+
     environment = var.batch_job_environment
-    
+
     logConfiguration = {
       logDriver = "awslogs"
       options = {
@@ -194,13 +194,13 @@ resource "aws_batch_job_definition" "batch_job_definition" {
         "awslogs-stream-prefix" = var.batch_job_log_prefix
       }
     }
-    
+
     secrets = var.batch_job_secrets
-    
+
     networkConfiguration = {
       assignPublicIp = var.batch_assign_public_ip
     }
-    
+
     fargatePlatformConfiguration = {
       platformVersion = var.batch_fargate_platform_version
     }
@@ -312,8 +312,8 @@ resource "aws_guardduty_detector" "ecs-batch" {
 
 # Amazon Inspector for container image scanning
 resource "aws_inspector2_enabler" "inspector" {
-  count = var.enable_inspector ? 1 : 0
-  account_ids = ["123456789012"]  # Replace with actual account ID when using real credentials
+  count          = var.enable_inspector ? 1 : 0
+  account_ids    = ["123456789012"] # Replace with actual account ID when using real credentials
   resource_types = ["ECR"]
 }
 
@@ -341,17 +341,17 @@ resource "aws_cloudwatch_event_rule" "batch_events_rule" {
   name        = var.eventbridge_rule_name
   description = "EventBridge rule to capture AWS Batch events"
   event_pattern = jsonencode({
-    "source": [
+    "source" : [
       "aws.batch"
     ]
   })
 }
 
 resource "aws_cloudwatch_event_target" "batch_events_target" {
-  count      = var.enable_eventbridge_rule ? 1 : 0
-  rule       = aws_cloudwatch_event_rule.batch_events_rule[0].name
-  target_id  = "batchEventsTarget"
-  arn        = var.eventbridge_target_arn
+  count     = var.enable_eventbridge_rule ? 1 : 0
+  rule      = aws_cloudwatch_event_rule.batch_events_rule[0].name
+  target_id = "batchEventsTarget"
+  arn       = var.eventbridge_target_arn
 }
 
 resource "aws_iam_role" "eventbridge_invoke_role" {
@@ -378,8 +378,8 @@ resource "aws_iam_role_policy" "eventbridge_invoke_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect = "Allow"
-      Action = "sns:Publish"
+      Effect   = "Allow"
+      Action   = "sns:Publish"
       Resource = var.eventbridge_target_arn
     }]
   })
