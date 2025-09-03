@@ -1,4 +1,4 @@
-# AWS Batch ECS Fargate Terraform Module - Examples
+# AWS Batch ECS Fargate Terraform Module - Examples Using Terraform IaC
 
 This directory contains example usage of the `batch-ecs` Terraform module.
 
@@ -63,5 +63,6 @@ The example passes the following variables to the module:
 - EventBridge rule and Amazon Inspector integration are optional and controlled via variables.
 
 ## License
+
 
 
