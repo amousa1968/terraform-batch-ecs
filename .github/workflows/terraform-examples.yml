@@ -36,8 +36,8 @@ jobs:
       with:
         python-version: '3.x'
 
-    - name: Install pytest
-      run: pip install pytest
+    - name: Install test dependencies
+      run: pip install -r ../tests/requirements.txt
 
     - name: Run pytest
       run: cd .. && pytest tests/
