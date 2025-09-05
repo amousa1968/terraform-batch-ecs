@@ -9,6 +9,7 @@ class TestTerraformValidate:
         stdout, stderr, returncode = terraform_validate
         assert returncode == 0, f"Terraform validate failed: {stderr}"
         assert "Success!" in stdout or "The configuration is valid" in stdout or returncode == 0
+        print("test_terraform_validate_success passed")
 
     def test_terraform_validate_no_errors(self, terraform_validate):
         """Test that terraform validate produces no errors"""
@@ -16,6 +17,12 @@ class TestTerraformValidate:
         assert returncode == 0, f"Validation failed with errors: {stderr}"
         # Ensure no error messages in stderr
         assert not stderr.strip() or "Success!" in stderr, f"Unexpected error in stderr: {stderr}"
+        print("test_terraform_validate_no_errors passed")
+
+def pytest_terminal_summary(terminalreporter, exitstatus, config):
+    passed = len(terminalreporter.stats.get('passed', []))
+    failed = len(terminalreporter.stats.get('failed', []))
+    terminalreporter.write_sep("=", f"Test Summary: {passed} passed, {failed} failed")
 
 
 class TestTerraformFormat:
