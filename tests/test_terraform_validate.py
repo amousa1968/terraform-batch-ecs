@@ -149,3 +149,4 @@ class TestResourceValidation:
         stdout, stderr, returncode = terraform_plan
         assert "timeout" in stdout
         assert "attempt_duration_seconds" in stdout
+
