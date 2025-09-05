@@ -68,8 +68,8 @@ class TestConfigurationFiles:
 
     def test_mock_credentials_exists(self, terraform_examples_dir):
         """Test that mock-credentials.tf exists"""
-        mock_creds = terraform_examples_dir / "mock-credentials.tf"
-        assert mock_creds.exists(), "mock-credentials.tf should exist in examples directory"
+        mock_creds = terraform_examples_dir.parent / "mock-credentials.tf"
+        assert mock_creds.exists(), "mock-credentials.tf should exist in root directory"
 
 
 class TestResourceValidation:
